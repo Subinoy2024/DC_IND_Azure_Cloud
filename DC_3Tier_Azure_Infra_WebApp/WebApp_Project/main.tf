@@ -30,6 +30,14 @@ resource "azurerm_virtual_network" "main" {
   resource_group_name = azurerm_resource_group.main.name
 }
 
+resource "azurerm_virtual_network" "main2" {
+  name                = "vnet1-network"
+  address_space       = ["10.0.0.0/27"]
+  location            = "eastus"
+  resource_group_name = azurerm_resource_group.main.name
+}
+
+
 resource "azurerm_subnet" "main" {
   name                 = "internal"
   resource_group_name  = azurerm_resource_group.main.name
