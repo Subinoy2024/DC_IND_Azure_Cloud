@@ -7,7 +7,7 @@ trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  DC_DataCenter
 
 steps:
 - script: echo Hello, world!
