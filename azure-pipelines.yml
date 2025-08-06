@@ -6,8 +6,11 @@
 trigger:
 - main
 
-pool:
-  DC_DataCenter
+pool: DC_DataCenter
+
+variables:
+
+  config_path_wa: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
 
 steps:
 - task: TerraformInstaller@1
@@ -19,7 +22,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
+    workingDirectory: 'config_path_wa'
     backendServiceArm: 'DC_WID_SC01'
     backendAzureRmStorageAccountName: 'dcindstoragea001'
     backendAzureRmContainerName: 'dcpipeline001'
@@ -29,7 +32,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'custom'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
+    workingDirectory: 'config_path_wa'
     outputTo: 'console'
     customCommand: 'fmt'
     environmentServiceNameAzureRM: 'DC_WID_SC01'
@@ -38,13 +41,13 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'validate'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
+    workingDirectory: 'config_path_wa'
 
 - task: TerraformTask@5
   displayName: executing terraform plan for infra
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
+    workingDirectory: 'config_path_wa'
     environmentServiceNameAzureRM: 'DC_WID_SC01'
 
