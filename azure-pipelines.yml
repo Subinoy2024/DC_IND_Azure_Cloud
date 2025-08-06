@@ -10,8 +10,8 @@ pool: DC_DataCenter
 
 variables:
 
-  config_path_wa: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
-
+  config_path: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
+  backend_sc: 'DC_WID_SC01'
 steps:
 - task: TerraformInstaller@1
   displayName: terraform installation
@@ -22,8 +22,8 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    workingDirectory: 'config_path_wa'
-    backendServiceArm: 'DC_WID_SC01'
+    workingDirectory: $(config_path)
+    backendServiceArm: $(backend_sc)
     backendAzureRmStorageAccountName: 'dcindstoragea001'
     backendAzureRmContainerName: 'dcpipeline001'
     backendAzureRmKey: 'webappdc.tfstate'
@@ -32,22 +32,22 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'custom'
-    workingDirectory: 'config_path_wa'
+    workingDirectory: $(config_path)
     outputTo: 'console'
     customCommand: 'fmt'
-    environmentServiceNameAzureRM: 'DC_WID_SC01'
+    environmentServiceNameAzureRM: $(backend_sc)
 - task: TerraformTask@5
   displayName: running terraform validate
   inputs:
     provider: 'azurerm'
     command: 'validate'
-    workingDirectory: 'config_path_wa'
+    workingDirectory: $(config_path)
 
 - task: TerraformTask@5
   displayName: executing terraform plan for infra
   inputs:
     provider: 'azurerm'
     command: 'plan'
-    workingDirectory: 'config_path_wa'
-    environmentServiceNameAzureRM: 'DC_WID_SC01'
+    workingDirectory: $(config_path)
+    environmentServiceNameAzureRM: $(backend_sc)
 
