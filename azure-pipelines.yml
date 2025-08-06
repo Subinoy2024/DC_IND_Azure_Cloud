@@ -10,10 +10,29 @@ pool:
   DC_DataCenter
 
 steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+- task: TerraformInstaller@1
+  inputs:
+    terraformVersion: 'latest'
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)\DC_3Tier_Azure_Infra_WebApp\WebApp_Project'
+    backendServiceArm: 'DC_WID_SC01'
+    backendAzureRmStorageAccountName: 'dcindstoragea001'
+    backendAzureRmContainerName: 'dcpipeline001'
+    backendAzureRmKey: 'webappdc.tfstate'
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'custom'
+    workingDirectory: '$(System.DefaultWorkingDirectory)\DC_3Tier_Azure_Infra_WebApp\WebApp_Project'
+    outputTo: 'console'
+    customCommand: 'fmt'
+    environmentServiceNameAzureRM: 'DC_WID_SC01'
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'validate'
+    workingDirectory: '$(System.DefaultWorkingDirectory)\DC_3Tier_Azure_Infra_WebApp\WebApp_Project'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
