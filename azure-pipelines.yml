@@ -17,7 +17,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)\DC_3Tier_Azure_Infra_WebApp\WebApp_Project'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
     backendServiceArm: 'DC_WID_SC01'
     backendAzureRmStorageAccountName: 'dcindstoragea001'
     backendAzureRmContainerName: 'dcpipeline001'
@@ -26,7 +26,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'custom'
-    workingDirectory: '$(System.DefaultWorkingDirectory)\DC_3Tier_Azure_Infra_WebApp\WebApp_Project'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
     outputTo: 'console'
     customCommand: 'fmt'
     environmentServiceNameAzureRM: 'DC_WID_SC01'
@@ -34,5 +34,11 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'validate'
-    workingDirectory: '$(System.DefaultWorkingDirectory)\DC_3Tier_Azure_Infra_WebApp\WebApp_Project'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
 
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
+    environmentServiceNameAzureRM: 'DC_WID_SC01'
