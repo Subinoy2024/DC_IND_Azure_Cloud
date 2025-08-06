@@ -11,9 +11,11 @@ pool:
 
 steps:
 - task: TerraformInstaller@1
+  displayName: terraform installation
   inputs:
     terraformVersion: 'latest'
 - task: TerraformTask@5
+  displayName: Initilizing terraform init
   inputs:
     provider: 'azurerm'
     command: 'init'
@@ -23,6 +25,7 @@ steps:
     backendAzureRmContainerName: 'dcpipeline001'
     backendAzureRmKey: 'webappdc.tfstate'
 - task: TerraformTask@5
+  displayName: running terraform fmt
   inputs:
     provider: 'azurerm'
     command: 'custom'
@@ -31,14 +34,17 @@ steps:
     customCommand: 'fmt'
     environmentServiceNameAzureRM: 'DC_WID_SC01'
 - task: TerraformTask@5
+  displayName: running terraform validate
   inputs:
     provider: 'azurerm'
     command: 'validate'
     workingDirectory: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
 
 - task: TerraformTask@5
+  displayName: executing terraform plan for infra
   inputs:
     provider: 'azurerm'
     command: 'plan'
     workingDirectory: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
     environmentServiceNameAzureRM: 'DC_WID_SC01'
+
