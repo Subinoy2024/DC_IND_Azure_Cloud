@@ -12,6 +12,8 @@ variables:
 
   config_path: '$(System.DefaultWorkingDirectory)/DC_3Tier_Azure_Infra_WebApp/WebApp_Project'
   backend_sc: 'DC_WID_SC01'
+
+  
 steps:
 - task: TerraformInstaller@1
   displayName: terraform installation
